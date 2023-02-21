@@ -8,17 +8,18 @@ from datetime import datetime
 from pathlib import Path
 import requests
 import discord
+from discord.ext import commands
 from dotenv import load_dotenv
 load_dotenv()
-client = discord.Client(intents=discord.Intents.default())
-@client.event
-async def on_ready():
-    print('Bot is ready.')
-client.run(os.getenv('DISCORD_BOT_TOKEN'))
+
 
 
 # Get user information
 class following_main:
+    client = discord.Client(intents=discord.Intents.default())
+    @client.event
+    async def on_ready():
+        print('Bot is ready.')
     answer= input("\nWould you like to use existing account? (y/n): ").strip().lower()
     if answer == "y":
         print("Displaying existing accounts: ")
@@ -48,35 +49,35 @@ class following_main:
     # Try to login and get account details, if fails, terminate
     try:
                 # Create the client
-        cl = Client()
+        clinsta = Client()
 
         if username == os.getenv("TRH1U"):
-            cl.set_proxy(os.getenv("PROXYZ1"))
+            clinsta.set_proxy(os.getenv("PROXYZ1"))
         elif username == os.getenv("BRITTJAMSU"):
-            cl.set_proxy(os.getenv("PROXYINS"))
+            clinsta.set_proxy(os.getenv("PROXYINS"))
         elif username == (os.getenv("BOBU")):
-            cl.set_proxy(os.getenv("PROXYDIND"))
+            clinsta.set_proxy(os.getenv("PROXYDIND"))
         else:
-            cl.set_proxy(os.getenv("PROXYZ1"))
+            clinsta.set_proxy(os.getenv("PROXYZ1"))
         # If there is a dump for the account, load settings
         if os.path.exists(DUMP):
-            cl.load_settings(DUMP)
+            clinsta.load_settings(DUMP)
             print("Loaded account settings from dump.")
 
         # Login
-        cl.login(username, password, verification_code=oauth)
+        clinsta.login(username, password, verification_code=oauth)
         # If there is not a dump for the account, dump settings
         if not os.path.exists(DUMP):
-            cl.dump_settings(DUMP)
+            clinsta.dump_settings(DUMP)
             print("Dumped account settings to temp directory.")
         # Get the user ID
-        user_id = cl.user_id
+        user_id = clinsta.user_id
         print("Your User ID: {}".format(user_id))
         
 
         # Get following
         print("Getting accounts that you follow...")
-        following = cl.user_following(user_id)
+        following = clinsta.user_following(user_id)
         print("You are following {} accounts.".format(len(following)))
                 
     except Exception as e:
@@ -243,7 +244,7 @@ class following_main:
     if anw=='following-status':
         following_status(following_dict, old_backup, path1, path, html, html2,path0,BACKUP)
     elif anw=='names':
-        following = cl.user_following(cl.user_id)
+        following = clinsta.user_following(clinsta.user_id)
          # Extract full names from user objects
         full_names = [user.full_name for user in following.values()]
 
@@ -258,11 +259,13 @@ class following_main:
         # Save the workbook
         workbook.save("full_names_{}.xlsx".format(username))
         print(full_names)
+
     elif anw=='media':
-            following=cl.user_following(cl.user_id)
+            client.run(os.getenv('DISCORD_BOT_TOKEN'))
+            following=clinsta.user_following(clinsta.user_id)
             media = []
             for user_id in following:
-                user_media = cl.user_medias(cl.user_id,amount=1)
+                user_media = clinsta.user_medias(clinsta.user_id,amount=1)
             for m in user_media:
                 media.append(m)
             webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
@@ -277,7 +280,9 @@ class following_main:
     print("All media sent to the Discord channel.")
     input("Press Enter to terminate.")
     # Send the media file to the Discord channel
+
     
+
 
        
 
