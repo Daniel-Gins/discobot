@@ -2,5 +2,5 @@ instagrapi==1.16.41
 pwinput==1.0.2
 pillow==9.4.0
 openpyxl==3.1.1
-discord
-dotenv
+discord.py
+python-dotenv
